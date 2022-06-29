@@ -1,1 +1,1 @@
-# drug_ingredient_info
+# drug_detail_info
