@@ -27,9 +27,10 @@ class Drug(models.Model):
         max_length=64,
         null=True
     )
-    user = models.ForeignKey(
-        User,
-        verbose_name='user',
-        on_delete=models.SET_NULL,
-        null=True
-    )
+    # user = models.ForeignKey(
+    #     User,
+    #     verbose_name='user',
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     default='Anon'
+    # )
