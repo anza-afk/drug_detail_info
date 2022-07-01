@@ -15,3 +15,12 @@ class DrugsListView(generics.ListAPIView):
 class DrugDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DrugDetailSerializer
     queryset = Drug.objects.all()
+    lookup_field = 'name'
+
+
+class DrugsByActiveIngredientView(generics.ListAPIView):
+    serializer_class = DrugsListSerializer
+
+    def get_queryset(self):
+        component = self.kwargs['component']
+        return Drug.objects.filter(active_ingredient__icontains=component)

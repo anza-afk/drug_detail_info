@@ -11,8 +11,9 @@ class Drug(models.Model):
         db_index=True,
         unique=True
     )
-    active_ingredient = models.JSONField(
-        verbose_name='Действующее вещество'
+    active_ingredient = models.CharField(
+        verbose_name='Действующее вещество',
+        max_length=1024
     )
     minimal_age = models.IntegerField(
         verbose_name='Минимальный возраст',
