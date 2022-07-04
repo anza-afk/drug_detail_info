@@ -1,5 +1,6 @@
+from unicodedata import name
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import requests
 from .forms import DrugForm
 
@@ -14,14 +15,24 @@ def index(request, name):
 
 
 def add_drug(request):
-    put_response = f'{URL}drug/create'
+    endpoint = f'{URL}drug/create'
     if request.method == 'POST':
         form = DrugForm(request.POST)  # request.user
         if form.is_valid():
-            return HttpResponseRedirect('add')
+            print('<<<<<<<')
+            array = {
+                'name': form['name'].data,
+                'active_ingredient': form['active_ingredient'].data,
+                'minimal_age': form['minimal_age'].data,
+                'recipe_only': form['recipe_only'].data,
+                'form_of_release': form['form_of_release'].data
+            }
+            requests.post(endpoint, data=array)
+            form = DrugForm()
+            return render(request, 'drugs_ui/put_form.html', {'form': form})
     else:
         form = DrugForm()  # request.user
-    return render(request, 'drugs_ui/put_form.html', {'form': form, 'put_response': put_response})
+    return render(request, 'drugs_ui/put_form.html', {'form': form})
 
 
 def drug_search(request, component):

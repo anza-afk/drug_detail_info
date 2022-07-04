@@ -3,6 +3,14 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class ActiveIngredient(models.Model):
+    name = models.CharField(
+        verbose_name='Наименование',
+        max_length=256,
+        db_index=True,
+        unique=True
+    )
+
 
 class Drug(models.Model):
     name = models.CharField(
@@ -11,9 +19,9 @@ class Drug(models.Model):
         db_index=True,
         unique=True
     )
-    active_ingredient = models.CharField(
+    active_ingredient = models.ManyToManyField(
+        ActiveIngredient,
         verbose_name='Действующее вещество',
-        max_length=1024
     )
     minimal_age = models.IntegerField(
         verbose_name='Минимальный возраст',

@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action={{ put_response }} method="post">
+    <form action="/add/" method="post">
         {% csrf_token %}
         {% for line in form %}
         <h4>{{ line.label }}</h4></br>
