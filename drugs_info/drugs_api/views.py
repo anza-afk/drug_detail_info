@@ -23,4 +23,4 @@ class DrugsByActiveIngredientView(generics.ListAPIView):
 
     def get_queryset(self):
         component = self.kwargs['component']
-        return Drug.objects.filter(active_ingredient__icontains=component)
+        return Drug.objects.filter(active_ingredient__contains=component)

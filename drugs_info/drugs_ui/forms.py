@@ -14,6 +14,7 @@ class DrugForm(forms.Form):
     )
     recipe_only = forms.BooleanField(
         label='Требуется рецепт',
+        required=False,
     )
     form_of_release = forms.CharField(
         label='Форма выпуска',
