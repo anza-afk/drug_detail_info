@@ -1,8 +1,8 @@
-from unicodedata import name
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 import requests
 from .forms import DrugForm
+import json
 
 # URL need to change
 URL = 'http://127.0.0.1:8000/api/v1/drugs/'
@@ -19,15 +19,18 @@ def add_drug(request):
     if request.method == 'POST':
         form = DrugForm(request.POST)  # request.user
         if form.is_valid():
-            print('<<<<<<<')
+            active_ingredient = [
+                {"name": x.strip()} for x in form['active_ingredient'].data.split(',')
+            ]
             array = {
                 'name': form['name'].data,
-                'active_ingredient': form['active_ingredient'].data,
+                'active_ingredient': active_ingredient,
                 'minimal_age': form['minimal_age'].data,
                 'recipe_only': form['recipe_only'].data,
                 'form_of_release': form['form_of_release'].data
             }
-            requests.post(endpoint, data=array)
+            array = json.dumps(array)
+            requests.post(endpoint, data=array, headers={'Content-Type': 'application/json'})
             form = DrugForm()
             return render(request, 'drugs_ui/put_form.html', {'form': form})
     else:
@@ -38,4 +41,8 @@ def add_drug(request):
 def drug_search(request, component):
     response = requests.get(f'{URL}{component}', headers={})
     drug_json = response.json()
-    return render(request, 'drugs_ui/component_list.html', {"drug_json": drug_json})
+    return render(
+        request,
+        'drugs_ui/component_list.html',
+        {"drug_json": drug_json}
+        )
