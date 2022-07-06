@@ -1,6 +1,6 @@
 from rest_framework import generics
 from drugs_api.serializers import DrugDetailSerializer, DrugsListSerializer
-from drugs_api.models import Drug
+from drugs_api.models import Drug, ActiveIngredient
 
 
 class CreateDrugView(generics.CreateAPIView):
@@ -20,7 +20,8 @@ class DrugDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class DrugsByActiveIngredientView(generics.ListAPIView):
     serializer_class = DrugsListSerializer
-
     def get_queryset(self):
+
         component = self.kwargs['component']
-        return Drug.objects.filter(active_ingredient__contains=component)
+        ingredient_query = ActiveIngredient.objects.filter(name__icontains=component)
+        return Drug.objects.filter(active_ingredient__in=ingredient_query)

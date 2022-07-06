@@ -41,8 +41,13 @@ def add_drug(request):
 def drug_search(request, component):
     response = requests.get(f'{URL}{component}', headers={})
     drug_json = response.json()
+    render_data = []
+    for line in drug_json:
+        render_data.append({
+            f"{(line['name'])} - в составе:": [x['name'] for x in line['active_ingredient']]
+        })
     return render(
         request,
         'drugs_ui/component_list.html',
-        {"drug_json": drug_json}
+        {"drug_json": render_data}
         )
