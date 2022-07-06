@@ -3,6 +3,12 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
+class ActiveIngredientManager(models.Manager):
+    def get_by_natural_key(self, name):
+        return self.get(name=name)
+
+
 class ActiveIngredient(models.Model):
     name = models.CharField(
         verbose_name='Наименование',
@@ -10,6 +16,10 @@ class ActiveIngredient(models.Model):
         db_index=True,
         unique=True
     )
+    objects = ActiveIngredientManager()
+
+    def __str__(self):
+        return self.name
 
 
 class Drug(models.Model):

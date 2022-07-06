@@ -30,7 +30,6 @@ class DrugDetailSerializer(serializers.ModelSerializer):
                 obj = ActiveIngredient.objects.create(
                     **ingredient
                 )
-
             ingredients.append(obj)
         instance.active_ingredient.set(ingredients)
         return instance
@@ -62,9 +61,7 @@ class DrugDetailSerializer(serializers.ModelSerializer):
                 obj = ActiveIngredient.objects.create(
                     **ingredient
                 )
-
             ingredients.append(obj)
-            # instance.active_ingredient.add(obj)
         instance.active_ingredient.set(ingredients)
         instance.save()
         return instance
@@ -75,6 +72,8 @@ class DrugDetailSerializer(serializers.ModelSerializer):
 
 
 class DrugsListSerializer(serializers.ModelSerializer):
+    active_ingredient = ActiveIngredientSerializer(read_only=False, many=True)
+
     class Meta:
         model = Drug
         fields = ('id', 'name', 'active_ingredient')
