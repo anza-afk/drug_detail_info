@@ -6,8 +6,9 @@ class DrugForm(forms.Form):
         label='Наименование',
         max_length=256,
     )
-    active_ingredient = forms.JSONField(
-        label='Действующее вещество'
+    active_ingredient = forms.CharField(
+        label='Действующее вещество',
+        max_length=1024
     )
     minimal_age = forms.IntegerField(
         label='Минимальный возраст',

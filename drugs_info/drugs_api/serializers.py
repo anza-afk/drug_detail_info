@@ -17,14 +17,23 @@ class DrugDetailSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         active_ingredient_data = validated_data.pop('active_ingredient')
-        drug = Drug.objects.create(**validated_data)
+        instance = Drug.objects.create(**validated_data)
+        ingredients = []
         for ingredient in active_ingredient_data:
-            ingredient_dict = dict(ingredient)
-            obj = ActiveIngredient.objects.create(
-                name=ingredient_dict['name']
-            )
-            drug.active_ingredient.add(obj)
-        return drug
+            if ActiveIngredient.objects.filter(
+                name=dict(ingredient)["name"]
+            ):
+                obj = ActiveIngredient.objects.get(
+                    name=dict(ingredient)["name"]
+                )
+            else:
+                obj = ActiveIngredient.objects.create(
+                    **ingredient
+                )
+
+            ingredients.append(obj)
+        instance.active_ingredient.set(ingredients)
+        return instance
 
     def update(self, instance, validated_data):
         active_ingredient_data = validated_data.pop('active_ingredient')
@@ -56,7 +65,6 @@ class DrugDetailSerializer(serializers.ModelSerializer):
 
             ingredients.append(obj)
             # instance.active_ingredient.add(obj)
-        print(ingredients)
         instance.active_ingredient.set(ingredients)
         instance.save()
         return instance
