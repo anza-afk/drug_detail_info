@@ -8,6 +8,15 @@ import json
 URL = 'http://127.0.0.1:8000/api/v1/drugs/'
 
 
+class DrugSearch():
+    def __init__(self, name: str, active_ingredient: list) -> None:
+        self.name = name
+        self.active_ingridient = active_ingredient
+
+    def __repr__(self) -> str:
+        return self.name
+
+
 def index(request, name):
     response = requests.get(f'{URL}drug/detail/{name}', headers={})
     drug_json = response.json()
@@ -42,12 +51,19 @@ def drug_search(request, component):
     response = requests.get(f'{URL}{component}', headers={})
     drug_json = response.json()
     render_data = []
-    for line in drug_json:
-        render_data.append({
-            f"{(line['name'])} - в составе:": [x['name'] for x in line['active_ingredient']]
-        })
+    # for line in drug_json:
+    #     # render_data.append({
+    #     #     (line['name']): [x['name'] for x in line['active_ingredient']]
+    #     # })
+        # render_data.append([
+        #     (line['name']), [x['name'] for x in line['active_ingredient']]
+        # ])
+
+        # render_data.append(DrugSearch(name = line['name'], active_ingredient = "123"))
+        # print(render_data[0].active_ingredient)
     return render(
         request,
         'drugs_ui/component_list.html',
-        {"drug_json": render_data}
+        {"drug_json": drug_json}
         )
+
