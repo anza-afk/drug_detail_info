@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     {% for drug in drug_json %}
-    <h3>{{ drug }}</h3></br>
+    
+    <h3>{{ drug.name }}-
+        {% for active_ingredient in drug.active_ingredient %}
+        {{ active_ingredient.name }}
+        {% endfor %}
+    </h3></br>
+    
     {% endfor %}
-
 </head>
 <body>
     
