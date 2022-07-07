@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect, render
 import requests
 from .forms import DrugForm
@@ -39,7 +39,11 @@ def add_drug(request):
                 'form_of_release': form['form_of_release'].data
             }
             array = json.dumps(array)
-            requests.post(endpoint, data=array, headers={'Content-Type': 'application/json'})
+            requests.post(
+                endpoint,
+                data=array,
+                headers={'Content-Type': 'application/json'}
+            )
             form = DrugForm()
             return render(request, 'drugs_ui/put_form.html', {'form': form})
     else:
@@ -47,23 +51,14 @@ def add_drug(request):
     return render(request, 'drugs_ui/put_form.html', {'form': form})
 
 
-def drug_search(request, component):
-    response = requests.get(f'{URL}{component}', headers={})
-    drug_json = response.json()
-    render_data = []
-    # for line in drug_json:
-    #     # render_data.append({
-    #     #     (line['name']): [x['name'] for x in line['active_ingredient']]
-    #     # })
-        # render_data.append([
-        #     (line['name']), [x['name'] for x in line['active_ingredient']]
-        # ])
-
-        # render_data.append(DrugSearch(name = line['name'], active_ingredient = "123"))
-        # print(render_data[0].active_ingredient)
-    return render(
-        request,
-        'drugs_ui/component_list.html',
-        {"drug_json": drug_json}
-        )
-
+def drug_search_by_component(request, search_type, component):
+    if search_type in ('ingredient', 'drug'):
+        response = requests.get(f'{URL}{search_type}/{component}', headers={})
+        drug_json = response.json()
+        return render(
+            request,
+            'drugs_ui/component_list.html',
+            {"drug_json": drug_json}
+            )
+    else:
+        return HttpResponseNotFound(f'Неверные параметры поиска: {search_type}')
