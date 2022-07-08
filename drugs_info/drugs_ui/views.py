@@ -8,15 +8,6 @@ import json
 URL = 'http://127.0.0.1:8000/api/v1/drugs/'
 
 
-class DrugSearch():
-    def __init__(self, name: str, active_ingredient: list) -> None:
-        self.name = name
-        self.active_ingridient = active_ingredient
-
-    def __repr__(self) -> str:
-        return self.name
-
-
 def index(request, name):
     response = requests.get(f'{URL}drug/detail/{name}', headers={})
     drug_json = response.json()
