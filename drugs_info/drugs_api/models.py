@@ -16,6 +16,14 @@ class ActiveIngredient(models.Model):
         db_index=True,
         unique=True
     )
+    user = models.ForeignKey(
+        User,
+        verbose_name='user',
+        on_delete=models.SET_NULL,
+        null=True,
+        default=1
+    )
+
     objects = ActiveIngredientManager()
 
     def __str__(self):
@@ -33,8 +41,8 @@ class Drug(models.Model):
         ActiveIngredient,
         verbose_name='Действующее вещество',
     )
-    minimal_age = models.IntegerField(
-        verbose_name='Минимальный возраст',
+    med_price = models.FloatField(
+        verbose_name='Средняя цена',
         null=True
     )
     recipe_only = models.BooleanField(
@@ -46,10 +54,10 @@ class Drug(models.Model):
         max_length=64,
         null=True
     )
-    # user = models.ForeignKey(
-    #     User,
-    #     verbose_name='user',
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     default='Anon'
-    # )
+    user = models.ForeignKey(
+        User,
+        verbose_name='user',
+        on_delete=models.SET_NULL,
+        null=True,
+        default=1
+    )
