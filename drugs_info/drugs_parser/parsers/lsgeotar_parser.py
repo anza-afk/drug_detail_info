@@ -7,8 +7,6 @@ from selenium.common.exceptions import NoSuchElementException
 options = Options()
 options.add_argument("--headless")
 
-TEST_DATA = []
-
 
 def dict_from_drug_data(browser) -> dict:
     name = browser.find_element(By.CLASS_NAME, 'name-preparat-text').text
