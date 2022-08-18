@@ -1,13 +1,15 @@
-from selectors import EpollSelector
+
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 options = Options()
 options.add_argument("--headless")
 
 
-with webdriver.Chrome(options=options) as browser:
+with webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options) as browser:
     browser.implicitly_wait(2)
     browser.get('https://www.lsgeotar.ru/abc-pharma_tn/pg_000a2.html')
     links = browser.find_elements(By.CLASS_NAME, 'title-tn-link')[:1]
