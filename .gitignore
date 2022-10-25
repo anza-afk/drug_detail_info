@@ -1,5 +1,8 @@
 db_test.sqlite3
+<<<<<<< HEAD
 *.pyc
+=======
+>>>>>>> 2e4e005c16da78c119fb87c410680f3f7f5bd724
 *.sqlite3
 *amd64.deb
 */__pycache__/
