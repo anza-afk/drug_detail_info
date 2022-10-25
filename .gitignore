@@ -1,2 +1,4 @@
 db_test.sqlite3
-*.pyc
+*.sqlite3
+*amd64.deb
+*/__pycache__/
