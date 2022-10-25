@@ -88,6 +88,8 @@ with webdriver.Chrome(
         current_page_hrefs = get_drug_links(browser)
         get_and_write_data_from_hrefs(browser)
 
+    browser.back()
+    
     abc_pages = browser.find_element(By.CLASS_NAME, 'abc_cyr').find_elements(By.TAG_NAME, 'a')
     abc_pages_hrefs = [page.get_attribute('href') for page in abc_pages]
 
