@@ -25,7 +25,7 @@ def add_drug(request):
             array = {
                 'name': form['name'].data,
                 'active_ingredient': active_ingredient,
-                'minimal_age': form['minimal_age'].data,
+                'description': form['description'].data,
                 'recipe_only': form['recipe_only'].data,
                 'form_of_release': form['form_of_release'].data
             }
