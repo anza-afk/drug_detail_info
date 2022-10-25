@@ -3,6 +3,7 @@ from drugs_api.models import Drug, ActiveIngredient
 
 
 class ActiveIngredientSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = ActiveIngredient
         fields = '__all__'
@@ -12,7 +13,7 @@ class ActiveIngredientSerializer(serializers.ModelSerializer):
 
 
 class DrugDetailSerializer(serializers.ModelSerializer):
-    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     active_ingredient = ActiveIngredientSerializer(read_only=False, many=True)
 
     def create(self, validated_data):
@@ -73,6 +74,7 @@ class DrugDetailSerializer(serializers.ModelSerializer):
 
 class DrugsListSerializer(serializers.ModelSerializer):
     active_ingredient = ActiveIngredientSerializer(read_only=False, many=True)
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Drug
