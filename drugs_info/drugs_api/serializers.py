@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from drugs_api.models import Drug, ActiveIngredient
+from drugs_api.models import Drug, ActiveIngredient, DrugLink
 
 
 class ActiveIngredientSerializer(serializers.ModelSerializer):
@@ -77,3 +77,11 @@ class DrugsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Drug
         fields = ('id', 'name', 'active_ingredient')
+
+
+class DrugsLinksDetailSerializer(serializers.ModelSerializer):
+    drug_id = serializers.RelatedField(many=False, read_only=True)
+
+    class Meta:
+        model = DrugLink
+        # fields = ('id', 'url', 'drug_id')
