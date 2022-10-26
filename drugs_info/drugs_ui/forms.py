@@ -10,7 +10,7 @@ class DrugForm(forms.Form):
         label='Действующее вещество',
         max_length=1024
     )
-    minimal_age = forms.IntegerField(
+    description = forms.CharField(
         label='Минимальный возраст',
     )
     recipe_only = forms.BooleanField(

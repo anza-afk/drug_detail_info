@@ -16,6 +16,14 @@ class ActiveIngredient(models.Model):
         db_index=True,
         unique=True
     )
+    user = models.ForeignKey(
+        User,
+        verbose_name='user',
+        on_delete=models.SET_NULL,
+        null=True,
+        default=1
+    )
+
     objects = ActiveIngredientManager()
 
     def __str__(self):
@@ -47,6 +55,7 @@ class Drug(models.Model):
         verbose_name='Требуется рецепт',
         null=True
     )
+<<<<<<< HEAD
     # user = models.ForeignKey(
     #     User,
     #     verbose_name='user',

@@ -8,21 +8,25 @@ from functools import reduce
 
 class CreateDrugView(generics.CreateAPIView):
     serializer_class = DrugDetailSerializer
+    permission_classes = (IsAdminUser, )
 
 
 class DrugsListView(generics.ListAPIView):
     serializer_class = DrugsListSerializer
     queryset = Drug.objects.all()
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
 class DrugDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DrugDetailSerializer
     queryset = Drug.objects.all()
     lookup_field = 'name'
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
 class DrugsByActiveIngredientView(generics.ListAPIView):
     serializer_class = DrugsListSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
         component = self.kwargs['component']
@@ -34,6 +38,7 @@ class DrugsByActiveIngredientView(generics.ListAPIView):
 
 class DrugsByDrug(generics.ListAPIView):
     serializer_class = DrugsListSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
         drug_name = self.kwargs['drug']
