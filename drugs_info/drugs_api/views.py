@@ -1,6 +1,5 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
-from drugs_api.serializers import DrugDetailSerializer, DrugsListSerializer
+from drugs_api.serializers import DrugDetailSerializer, DrugsListSerializer, DrugsLinksDetailSerializer
 from drugs_api.models import Drug, ActiveIngredient
 import operator
 from django.db.models import Q
@@ -50,3 +49,7 @@ class DrugsByDrug(generics.ListAPIView):
         ))
         ingredient_query = ActiveIngredient.objects.filter(query)
         return Drug.objects.filter(active_ingredient__in=ingredient_query)
+
+
+class CreateDrugLinkView(generics.CreateAPIView):
+    serializer_class = DrugsLinksDetailSerializer

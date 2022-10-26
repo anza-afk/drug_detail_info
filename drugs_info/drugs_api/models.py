@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-User = get_user_model()
+# User = get_user_model()
 
 
 class ActiveIngredientManager(models.Manager):
@@ -41,23 +41,40 @@ class Drug(models.Model):
         ActiveIngredient,
         verbose_name='Действующее вещество',
     )
-    med_price = models.FloatField(
-        verbose_name='Средняя цена',
+    pharmacological_class = models.CharField(
+        verbose_name = 'Фармакологическая группа',
+        max_length=256,
+        null=True
+    )
+    form_of_release = models.CharField(
+        'Лекарственная форма',
+        max_length=64,
         null=True
     )
     recipe_only = models.BooleanField(
         verbose_name='Требуется рецепт',
         null=True
     )
-    form_of_release = models.CharField(
-        'Форма выпуска',
-        max_length=64,
-        null=True
+<<<<<<< HEAD
+    # user = models.ForeignKey(
+    #     User,
+    #     verbose_name='user',
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     default='Anon'
+    # )
+
+
+class DrugLink(models.Model):
+    url = models.CharField(
+        verbose_name='Ссылка',
+        max_length=256,
+        db_index=True,
+        unique=True
     )
-    user = models.ForeignKey(
-        User,
-        verbose_name='user',
-        on_delete=models.SET_NULL,
+    drug_id = models.ForeignKey(
+        Drug,
+        verbose_name='Лекарство',
         null=True,
-        default=1
+        on_delete=models.SET_NULL
     )
