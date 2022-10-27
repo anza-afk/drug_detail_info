@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-# User = get_user_model()
+User = get_user_model()
 
 
 class ActiveIngredientManager(models.Manager):
@@ -55,7 +55,7 @@ class Drug(models.Model):
         verbose_name='Требуется рецепт',
         null=True
     )
-<<<<<<< HEAD
+
     # user = models.ForeignKey(
     #     User,
     #     verbose_name='user',
