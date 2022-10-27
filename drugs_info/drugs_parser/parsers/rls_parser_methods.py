@@ -5,6 +5,8 @@ import os
 import sys
 
 sys.path.append(os.getcwd())
+sys.path.append(os.path.join(sys.path[0], '../../'))
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "drugs_info.settings")
 
 import django
@@ -19,12 +21,11 @@ def get_drug_links(browser, url):
     letters = [a.get_attribute('href') for a in abc_window.find_elements(By.TAG_NAME, 'a')]
     for a in letters:
         browser.get(a)
-        with open('kirill-petooh.txt', 'a', encoding='UTF-8') as f:
-            abc_list = browser.find_element(By.CLASS_NAME, 'b-alphabet-index')
-            links = abc_list.find_elements(By.CLASS_NAME, 'link')
-            for link in links:
-                drug_link = DrugLink(url=link.get_attribute("href"))
-                drug_link.save()
+        abc_list = browser.find_element(By.CLASS_NAME, 'b-alphabet-index')
+        links = abc_list.find_elements(By.CLASS_NAME, 'link')
+        for link in links:
+            drug_link = DrugLink(url=link.get_attribute("href"))
+            drug_link.save()
 
 
 def rls_authorization(browser, auth_url, auth_data):
