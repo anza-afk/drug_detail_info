@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-
+import re
 import os
 import sys
 
@@ -66,8 +66,13 @@ def get_drug_info(browser, drug_url):
     slist = browser.find_element(By.CLASS_NAME, 'structure-list')
     drug_dict['name'] = browser.find_element(By.CLASS_NAME, 'heading').text
     if 'Действующее вещество' in slist.text:
-        drug_dict['active_ingredient'].append(browser.find_element(
-            By.XPATH, "//h2[@id='deistvuyushhee-veshhestvo']/following-sibling::div").text)
+        temp_ingredients = browser.find_element(
+            By.XPATH, "//h2[@id='deistvuyushhee-veshhestvo']/following-sibling::div").text
+        temp_ingredients = re.split('\+|\(', temp_ingredients)
+        if len(temp_ingredients) > 1:
+            half_list = int(len(temp_ingredients)/2)
+            for i, v in enumerate(temp_ingredients[:half_list]):
+                drug_dict['active_ingredient'].append({"name":f"{v.strip().replace(')', '')} ({temp_ingredients[half_list + i].strip().replace(')', '')})"})
     if 'Фармакологическая группа' in slist.text:
         drug_dict['pharmacological_class'] = browser.find_element(
             By.XPATH, "//h2[@id='farmakologiceskaya-gruppa']/following-sibling::div").text
@@ -75,6 +80,7 @@ def get_drug_info(browser, drug_url):
         drug_dict['form_of_release'] = browser.find_element(
             By.XPATH, "//h2[@id='forma-vypuska']/following-sibling::div").text
     if 'Условия отпуска из аптек' in slist.text:
-        drug_dict['recipe_only'] = browser.find_element(
+        recipe_data = browser.find_element(
             By.XPATH, "//h2[@id='usloviya-otpuska-iz-aptek']/following-sibling::div").text
+        drug_dict['recipe_only'] = True if 'Без' in recipe_data else False
     return drug_dict

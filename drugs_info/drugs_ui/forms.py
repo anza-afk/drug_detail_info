@@ -10,16 +10,16 @@ class DrugForm(forms.Form):
         label='Действующее вещество',
         max_length=1024
     )
-    description = forms.CharField(
-        label='Минимальный возраст',
+    pharmacological_class = forms.CharField(
+        label='Фармакологическая группа',
+    )
+    form_of_release = forms.CharField(
+        label='Лекарственная форма',
+        max_length=64,
     )
     recipe_only = forms.BooleanField(
         label='Требуется рецепт',
         required=False,
-    )
-    form_of_release = forms.CharField(
-        label='Форма выпуска',
-        max_length=64,
     )
     # def __init__(self, user, *args,**kwargs):
     #     self.user = user

@@ -25,9 +25,9 @@ def add_drug(request):
             array = {
                 'name': form['name'].data,
                 'active_ingredient': active_ingredient,
-                'description': form['description'].data,
-                'recipe_only': form['recipe_only'].data,
-                'form_of_release': form['form_of_release'].data
+                'pharmacological_class': form['pharmacological_class'].data,
+                'form_of_release': form['form_of_release'].data,
+                'recipe_only': form['recipe_only'].data
             }
             array = json.dumps(array)
             requests.post(
