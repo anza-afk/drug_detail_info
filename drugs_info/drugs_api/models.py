@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -16,13 +17,13 @@ class ActiveIngredient(models.Model):
         db_index=True,
         unique=True
     )
-    user = models.ForeignKey(
-        User,
-        verbose_name='user',
-        on_delete=models.SET_NULL,
-        null=True,
-        default=1
-    )
+    # user = models.ForeignKey(
+    #     User,
+    #     verbose_name='user',
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     default=1
+    # )
 
     objects = ActiveIngredientManager()
 
@@ -33,9 +34,9 @@ class ActiveIngredient(models.Model):
 class Drug(models.Model):
     name = models.CharField(
         verbose_name='Наименование',
-        max_length=256,
+        max_length=1024,
         db_index=True,
-        unique=True
+        unique=True,
     )
     active_ingredient = models.ManyToManyField(
         ActiveIngredient,
@@ -43,13 +44,15 @@ class Drug(models.Model):
     )
     pharmacological_class = models.CharField(
         verbose_name = 'Фармакологическая группа',
-        max_length=256,
-        null=True
+        max_length=2048,
+        null=True,
+        blank=True
     )
     form_of_release = models.CharField(
         'Лекарственная форма',
-        max_length=64,
-        null=True
+        max_length=2048,
+        null=True,
+        blank=True
     )
     recipe_only = models.BooleanField(
         verbose_name='Требуется рецепт',
