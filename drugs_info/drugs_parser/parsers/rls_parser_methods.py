@@ -65,12 +65,12 @@ def get_drug_info(browser, drug_url):
             'form_of_release': None,
             'recipe_only': None,
         }
-        
         drug_dict['name'] = browser.find_element(By.CLASS_NAME, 'heading').text
         if 'Действующее вещество' in slist.text:
             temp_ingredients = browser.find_element(
                 By.XPATH, "//h2[@id='deistvuyushhee-veshhestvo']/following-sibling::div").text
             if '+' in temp_ingredients:
+                temp_ingredients = temp_ingredients.replace('IgG+', 'IgG, ').replace('IgA+', 'IgA, ').replace('IgM', 'IgM, ')
                 temp_ingredients = re.split('\+|\(', temp_ingredients)
                 if len(temp_ingredients) > 1:
                     half_list = int(len(temp_ingredients)/2)
@@ -79,10 +79,10 @@ def get_drug_info(browser, drug_url):
                         en_name = re.sub('\*|\)', '', temp_ingredients[half_list + i].strip())
                         drug_dict['active_ingredient'].append(
                             {"name":f"{ru_name} ({en_name})"}
-                            # {"name":f"{v.strip().replace(')', '').replace('*', '')} ({temp_ingredients[half_list + i].strip().replace(')', '').replace('*', '')})"}
                         )
             else:
-                    drug_dict['active_ingredient'].append({"name":temp_ingredients.strip().replace('*', '')})
+                    drug_dict['active_ingredient'].append(
+                        {"name":temp_ingredients.strip().replace('*', '')})
         if 'Фармакологическая группа' in slist.text:
             try:
                 drug_dict['pharmacological_class'] = browser.find_element(
