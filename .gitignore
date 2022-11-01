@@ -5,3 +5,5 @@ db.sqlite3
 */__pycache__/*
 rls_parser_settings.py
 google-chrome-stable_current_amd64.deb
+*.txt
+drugs_info/db.sqlite3

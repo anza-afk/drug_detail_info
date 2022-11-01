@@ -42,7 +42,8 @@ class DrugsByDrug(generics.ListAPIView):
 
     def get_queryset(self):
         drug_name = self.kwargs['drug']
-        drug = Drug.objects.filter(name=drug_name).first()
+        drug = Drug.objects.filter(name__icontains=drug_name).first()
+        print(drug_name)
         ingredients = drug.active_ingredient.all()
         query = reduce(operator.or_, (
             Q(name__icontains=item.name) for item in ingredients
