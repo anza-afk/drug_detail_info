@@ -78,7 +78,7 @@ class DrugsListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Drug
-        fields = ('id', 'name', 'active_ingredient')
+        fields = ('id', 'name', 'active_ingredient', 'pharmacological_class', 'form_of_release', 'recipe_only')
 
 
 class DrugsLinksDetailSerializer(serializers.ModelSerializer):

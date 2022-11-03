@@ -31,7 +31,7 @@ class DrugsByActiveIngredientView(generics.ListAPIView):
     def get_queryset(self):
         component = self.kwargs['component']
         ingredient_query = ActiveIngredient.objects.filter(
-            name__icontains=component
+            name__iregex=component
         )
         return Drug.objects.filter(active_ingredient__in=ingredient_query)
 
@@ -41,9 +41,9 @@ class DrugsByDrug(generics.ListAPIView):
     # permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
-        drug_name = self.kwargs['drug']
-        drug = Drug.objects.filter(name__icontains=drug_name).first()
-        print(drug_name)
+        # drug_name = self.kwargs['drug']
+        drug_name = self.request.query_params.get('drug')
+        drug = Drug.objects.filter(name__iregex=drug_name).first()
         ingredients = drug.active_ingredient.all()
         query = reduce(operator.or_, (
             Q(name__icontains=item.name) for item in ingredients
