@@ -13,7 +13,7 @@ class ActiveIngredientManager(models.Manager):
 class ActiveIngredient(models.Model):
     name = models.CharField(
         verbose_name='Наименование',
-        max_length=256,
+        max_length=1024,
         db_index=True,
         unique=True
     )
@@ -59,6 +59,7 @@ class Drug(models.Model):
         null=True
     )
 
+
     # user = models.ForeignKey(
     #     User,
     #     verbose_name='user',
@@ -71,7 +72,7 @@ class Drug(models.Model):
 class DrugLink(models.Model):
     url = models.CharField(
         verbose_name='Ссылка',
-        max_length=256,
+        max_length=512,
         db_index=True,
         unique=True
     )
@@ -79,5 +80,19 @@ class DrugLink(models.Model):
         Drug,
         verbose_name='Лекарство',
         null=True,
+        on_delete=models.SET_NULL
+    )
+
+
+class DrugPrice(models.Model):
+    price = models.JSONField(
+        verbose_name='Цена',
+        null=True
+    )
+    drug_id = models.ForeignKey(
+        Drug,
+        verbose_name='Лекарство',
+        null=True,
+        db_index=True,
         on_delete=models.SET_NULL
     )
