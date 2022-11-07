@@ -8,6 +8,7 @@ from rls_parser_settings import AUTH_DATA, AUTH_URL
 import os
 import sys
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import DataError
 
 sys.path.append(os.getcwd())
 sys.path.append(os.path.join(sys.path[0], '../../'))
@@ -17,6 +18,7 @@ os.environ.setdefault(
 )
 
 import django
+
 django.setup()
 
 from drugs_api.models import DrugLink, Drug, ActiveIngredient
@@ -28,12 +30,13 @@ options.add_argument("--headless")
 with webdriver.Chrome(
     service=Service(ChromeDriverManager().install()), options=options
 ) as browser:
+    print('django')
     rls_authorization(browser=browser, auth_url=AUTH_URL, auth_data=AUTH_DATA)
+    print('auth')
     browser.implicitly_wait(2)
+    COUNT = 1000
 
-    COUNT = 17499
-
-    for link in DrugLink.objects.all()[17500:]:
+    for link in DrugLink.objects.all()[1000:2000]:
         try:
             data = get_drug_info(browser, link.url)
             if not data:
@@ -79,4 +82,9 @@ with webdriver.Chrome(
             with open('log.txt', 'a', encoding='UTF-8') as f:
                     f.writelines(f"'timeout ERROR' {link.url}\n")
             continue
+        except DataError:
+            with open('log.txt', 'a', encoding='UTF-8') as f:
+                    f.writelines(f"'DATA ERROR' {link.url}\n")
+            continue
+
 

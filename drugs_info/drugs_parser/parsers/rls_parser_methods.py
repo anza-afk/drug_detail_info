@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from django.db.utils import IntegrityError
 import re
 import os
 import sys
@@ -24,8 +25,11 @@ def get_drug_links(browser, url):
         abc_list = browser.find_element(By.CLASS_NAME, 'b-alphabet-index')
         links = abc_list.find_elements(By.CLASS_NAME, 'link')
         for link in links:
-            drug_link = DrugLink(url=link.get_attribute("href"))
-            drug_link.save()
+            try:
+                drug_link = DrugLink(url=link.get_attribute("href"))
+                drug_link.save()
+            except IntegrityError:
+                continue
 
 
 def rls_authorization(browser, auth_url, auth_data):
