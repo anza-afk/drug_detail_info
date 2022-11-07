@@ -9,6 +9,8 @@ import os
 import sys
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import DataError
+from time import sleep
+
 
 sys.path.append(os.getcwd())
 sys.path.append(os.path.join(sys.path[0], '../../'))
@@ -25,6 +27,8 @@ from drugs_api.models import DrugLink, Drug, ActiveIngredient
 
 options = Options()
 options.add_argument("--headless")
+options.add_argument("--disable-blink-features=AutomationControlled")
+options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36")
 
 
 with webdriver.Chrome(
@@ -33,10 +37,11 @@ with webdriver.Chrome(
     print('django')
     rls_authorization(browser=browser, auth_url=AUTH_URL, auth_data=AUTH_DATA)
     print('auth')
-    browser.implicitly_wait(2)
-    COUNT = 1000
-
-    for link in DrugLink.objects.all()[1000:2000]:
+    COUNT = 449
+    browser.implicitly_wait(5)
+    sleep(5)
+    for link in DrugLink.objects.all()[449:1000]:
+        sleep(4)
         try:
             data = get_drug_info(browser, link.url)
             if not data:
