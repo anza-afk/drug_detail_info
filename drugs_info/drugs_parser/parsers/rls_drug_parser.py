@@ -1,3 +1,5 @@
+import os
+import sys
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
@@ -5,12 +7,9 @@ from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import TimeoutException
 from rls_parser_methods import get_drug_info, rls_authorization
 from rls_parser_settings import AUTH_DATA, AUTH_URL
-import os
-import sys
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import DataError
 from time import sleep
-
 
 sys.path.append(os.getcwd())
 sys.path.append(os.path.join(sys.path[0], '../../'))
@@ -25,22 +24,23 @@ django.setup()
 
 from drugs_api.models import DrugLink, Drug, ActiveIngredient
 
+
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36")
 
-
+print('django starting...')
 with webdriver.Chrome(
     service=Service(ChromeDriverManager().install()), options=options
 ) as browser:
-    print('django')
+    print('django started')
     rls_authorization(browser=browser, auth_url=AUTH_URL, auth_data=AUTH_DATA)
     print('auth')
-    COUNT = 449
+    COUNT = 0
     browser.implicitly_wait(5)
     sleep(5)
-    for link in DrugLink.objects.all()[449:1000]:
+    for link in DrugLink.objects.filter(drug_id=None):
         sleep(4)
         try:
             data = get_drug_info(browser, link.url)
@@ -64,8 +64,8 @@ with webdriver.Chrome(
                     recipe_only=data.get('recipe_only'),
                     )
                 drug.save()
-            
-            print(f"id: {drug.id}, {data['active_ingredient']}, {link.url}")
+
+            print(f"id: {drug.id}, {data['active_ingredient']}, {link.url}, {COUNT}")
             COUNT += 1
             link.drug_id = drug
             link.save()
@@ -91,5 +91,3 @@ with webdriver.Chrome(
             with open('log.txt', 'a', encoding='UTF-8') as f:
                     f.writelines(f"'DATA ERROR' {link.url}\n")
             continue
-
-

@@ -24,18 +24,6 @@ class DrugDetailView(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
-# class DrugsByActiveIngredientView(generics.ListAPIView):
-#     serializer_class = DrugsListSerializer
-#     # permission_classes = (IsAuthenticatedOrReadOnly, )
-
-#     def get_queryset(self):
-#         component = self.kwargs['component']
-#         ingredient_query = ActiveIngredient.objects.filter(
-#             name__iregex=component
-#         )
-#         return Drug.objects.filter(active_ingredient__in=ingredient_query)
-
-
 class DrugsByDrug(generics.ListAPIView):
     serializer_class = DrugsListSerializer
     # permission_classes = (IsAuthenticatedOrReadOnly, )
