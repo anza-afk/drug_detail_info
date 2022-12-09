@@ -1,11 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import redirect, render
+from django.http import HttpResponseNotFound
+from django.shortcuts import render
 import requests
 from .forms import DrugForm
 import json
 
 # URL need to change
-URL = 'http://127.0.0.1:8000/api/v1/drugs/'
+URL = 'http://127.0.0.1:8000/api/v1/drugs'
 
 
 def index(request, name):
@@ -44,7 +44,7 @@ def add_drug(request):
 
 def drug_search_by_component(request, search_type, component):
     if search_type in ('ingredient', 'drug'):
-        response = requests.get(f'{URL}{search_type}/{component}', headers={})
+        response = requests.get(f'{URL}?{search_type}={component}', headers={})
         drug_json = response.json()
         return render(
             request,
@@ -53,3 +53,4 @@ def drug_search_by_component(request, search_type, component):
             )
     else:
         return HttpResponseNotFound(f'Неверные параметры поиска: {search_type}')
+

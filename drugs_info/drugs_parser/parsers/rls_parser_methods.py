@@ -37,18 +37,19 @@ def rls_authorization(browser, auth_url, auth_data):
     browser.find_element(By.ID, 'email').send_keys(auth_data['login'])
     browser.find_element(By.ID, 'password').send_keys(auth_data['password'])
     browser.find_element(By.CLASS_NAME, 'btn').click()
-
     try:
         browser.find_element(By.CLASS_NAME, 'card-header')
         buttons = browser.find_elements(By.CLASS_NAME, 'btn')
         for button in buttons:
             if button.text == 'Продолжить':
                 button.click()
+
     except NoSuchElementException:
         pass
 
     try:
         title = browser.find_element(By.CLASS_NAME, 'card-header')
+        print('card1')
         if title.text == 'Выбор аккаунта':
             buttons = browser.find_elements(By.CLASS_NAME, 'btn')
             for button in buttons:
@@ -69,6 +70,7 @@ def get_drug_info(browser, drug_url):
             'form_of_release': None,
             'recipe_only': None,
         }
+        
         drug_dict['name'] = browser.find_element(By.CLASS_NAME, 'heading').text
         if 'Действующее вещество' in slist.text:
             temp_ingredients = browser.find_element(
