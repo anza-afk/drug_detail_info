@@ -28,7 +28,10 @@ from drugs_api.models import DrugLink, Drug, ActiveIngredient
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--disable-blink-features=AutomationControlled")
-options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36")
+options.add_argument((
+    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63"
+    "Safari/537.36"))
 
 print('django starting...')
 with webdriver.Chrome(
@@ -65,7 +68,10 @@ with webdriver.Chrome(
                     )
                 drug.save()
 
-            print(f"id: {drug.id}, {data['active_ingredient']}, {link.url}, {COUNT}")
+            print((
+                f"id: {drug.id},"
+                f"{data['active_ingredient']},"
+                f"{link.url}, {COUNT}"))
             COUNT += 1
             link.drug_id = drug
             link.save()
@@ -85,9 +91,9 @@ with webdriver.Chrome(
             drug.save()
         except TimeoutException:
             with open('log.txt', 'a', encoding='UTF-8') as f:
-                    f.writelines(f"'timeout ERROR' {link.url}\n")
+                f.writelines(f"'timeout ERROR' {link.url}\n")
             continue
         except DataError:
             with open('log.txt', 'a', encoding='UTF-8') as f:
-                    f.writelines(f"'DATA ERROR' {link.url}\n")
+                f.writelines(f"'DATA ERROR' {link.url}\n")
             continue
