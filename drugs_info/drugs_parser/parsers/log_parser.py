@@ -26,7 +26,10 @@ from drugs_api.models import Drug, ActiveIngredient
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--disable-blink-features=AutomationControlled")
-options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36")
+options.add_argument((
+    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63"
+    "Safari/537.36"))
 
 print('selenium starting...')
 with webdriver.Chrome(
@@ -38,7 +41,7 @@ with webdriver.Chrome(
     COUNT = 0
     browser.implicitly_wait(5)
     sleep(5)
-    with open ('log.txt', 'r', encoding='UTF-8') as read_file:
+    with open('log.txt', 'r', encoding='UTF-8') as read_file:
         log_links = read_file.readlines()
         for link in log_links:
             link = link.split()[-1]
@@ -66,7 +69,10 @@ with webdriver.Chrome(
                         )
                     drug.save()
 
-                print(f"id: {drug.id}, {data['active_ingredient']}, {link}, {COUNT}")
+                print((
+                    f"id: {drug.id},"
+                    f"{data['active_ingredient']},"
+                    f"{link}, {COUNT}"))
                 COUNT += 1
 
                 if len(data['active_ingredient']) > 0:
@@ -84,9 +90,9 @@ with webdriver.Chrome(
                 drug.save()
             except TimeoutException:
                 with open('log_out.txt', 'a', encoding='UTF-8') as f:
-                        f.writelines(f"'timeout ERROR' {link}\n")
+                    f.writelines(f"'timeout ERROR' {link}\n")
                 continue
             except DataError:
                 with open('log_out.txt', 'a', encoding='UTF-8') as f:
-                        f.writelines(f"'DATA ERROR' {link}\n")
+                    f.writelines(f"'DATA ERROR' {link}\n")
                 continue
